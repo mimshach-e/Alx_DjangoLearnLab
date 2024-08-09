@@ -9,7 +9,7 @@ from bookshelf.models import Book
 
 # verifying expected outputs
 >>> new_book.id
-5
+6
 
 >>> new_book.title
 '1984'

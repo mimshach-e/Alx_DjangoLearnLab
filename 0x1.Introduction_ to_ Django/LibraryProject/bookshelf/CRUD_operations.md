@@ -9,7 +9,7 @@ from bookshelf.models import Book
 
 # verifying expected outputs
 >>> new_book.id
-4
+6
 
 >>> new_book.title
 '1984'
@@ -23,20 +23,21 @@ from bookshelf.models import Book
 <QuerySet [<Book:  1984 by George Orwell, 1994>]>
 
 # retrieving by id 
->>> Book.objects.filter(id=1)
-<QuerySet [<Book:  1984 by George Orwell, 1994>]>
+>>> Book.objects.get(id=6) 
+<Book:  1984 by George Orwell, 1949>
 
 # retrieving by title 
->>> Book.objects.filter(title__startswith="198")
-<QuerySet [<Book:  1984 by George Orwell, 1949>]>
+>>> Book.objects.get(title="1984")
+<Book:  1984 by George Orwell, 1949>
 
 # retrieving by author 
->>> Book.objects.filter(author__startswith="George")
-<QuerySet [<Book:  1984 by George Orwell, 1949>]>
+>>> Book.objects.get(author__startswith="George")
+<Book:  1984 by George Orwell, 1949>
 
 # retrieving by publication year 
->>> Book.objects.filter(publication_year__startswith="194")
-<QuerySet [<Book:  1984 by George Orwell, 1949>]>
+>>> Book.objects.get(publication_year__startswith=194)      
+<Book:  1984 by George Orwell, 1949>
+
 
 
 # Update the title of “1984” to “Nineteen Eighty-Four” and save the changes.
