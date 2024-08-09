@@ -2,14 +2,14 @@
 from bookshelf.models import Book
 
 # creating a new instance of the book class
->>> new_book = Book(title="1984", author="George Orwell", publication_year="1949")
+>>> new_book = Book.objects.create(title="1984", author="George Orwell", publication_year=1949)
 
 # saving the book instance
 >>> new_book.save()
 
 # verifying expected outputs
 >>> new_book.id
-4
+5
 
 >>> new_book.title
 '1984'
