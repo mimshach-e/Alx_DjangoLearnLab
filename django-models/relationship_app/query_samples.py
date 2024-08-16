@@ -21,7 +21,6 @@ def Books_in_Library(library_name):
 # Retrieve the librarian for a library.
 def Librarian_for_Library(library_name):
     library = Library.objects.get(name=library_name)
-    librarian = library.Libriarian
-
+    librarian = Librarian.objects.get(library=library)
 
     print(f"The Librarian for the library is: {librarian.name}")
