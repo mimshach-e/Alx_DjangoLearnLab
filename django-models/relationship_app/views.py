@@ -1,10 +1,9 @@
 from typing import Any
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
-from .models import Book
-from .models import Library
+from .models import Book, Library
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
 
 # Create your views here.
 # Function-Based View FBV
