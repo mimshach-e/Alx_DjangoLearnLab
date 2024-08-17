@@ -11,6 +11,7 @@ def book_list(request):
     context = {'book_list': books}
     return render(request, 'relationship_app/list_books.html', context)
 
+
 # Class-Based View CBV
 class LibraryDetailView(DetailView):
     model = Library
@@ -20,3 +21,4 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['books'] = self.object.books.all()
         return context
+        
