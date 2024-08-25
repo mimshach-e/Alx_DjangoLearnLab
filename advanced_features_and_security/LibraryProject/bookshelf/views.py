@@ -1,12 +1,10 @@
 from django.shortcuts import render
-
-# Create your views here.
-# views.py
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Book
+from .forms import ExampleForm
 
+# Create your views here.
 
 # View for listing books, requires 'can_view' permission
 @login_required
@@ -20,13 +18,15 @@ def book_list(request):
 @permission_required('bookshelf.can_create', raise_exception=True)
 def create_book(request):
     if request.method == 'POST':
-        # Handle book creation logic here
-        title = request.POST.get('title')
-        author = request.user  # Assuming the logged-in user is the author
-        publication_year = request.POST.get('publication_year')
-        Book.objects.create(title=title, author=author, publication_year=publication_year)
-        return redirect('book_list')
-    return render(request, 'bookshelf/book_form.html')
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            book = form.save(commit=False)
+            book.author = request.user
+            book.save()
+            return redirect('book_list')
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/book_form.html', {'form': form})
 
 # View for editing a book, requires 'can_edit' permission
 @login_required
@@ -34,11 +34,13 @@ def create_book(request):
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
-        book.title = request.POST.get('title')
-        book.publication_year = request.POST.get('publication_year')
-        book.save()
-        return redirect('book_list')
-    return render(request, 'bookshelf/book_form.html', {'book': book})
+        form = ExampleForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = ExampleForm(instance=book)
+    return render(request, 'bookshelf/book_form.html', {'form': form, 'book': book})
 
 # View for deleting a book, requires 'can_delete' permission
 @login_required
