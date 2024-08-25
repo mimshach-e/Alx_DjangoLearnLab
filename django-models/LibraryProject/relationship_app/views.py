@@ -1,7 +1,8 @@
 from typing import Any
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.detail import DetailView
-from .models import Book, Library, UserProfile
+from .models import Book, UserProfile
+from .models import Library
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
 from .forms import BookForm
