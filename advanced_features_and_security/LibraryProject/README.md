@@ -76,3 +76,15 @@ CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
 
 # Specifies the allowed sources for images. This allows images from the site's own domain and data URIs.
 CSP_IMG_SRC = ("'self'", 'data:')
+
+
+Security Measures Implemented:
+
+HTTPS Enforcement: All HTTP traffic is redirected to HTTPS, ensuring encrypted communication between the client and server.
+HSTS: Instructs browsers to only access the site over HTTPS for a year, including subdomains, and allows preloading.
+Secure Cookies: Session and CSRF cookies are set to be transmitted only over HTTPS.
+Clickjacking Protection: X-Frame-Options header set to DENY, preventing the site from being framed.
+Content Type Sniffing Prevention: Stops browsers from MIME-sniffing responses.
+XSS Protection: Enables the browser's built-in XSS filter.
+
+These measures significantly enhance the security of the application by ensuring encrypted communication, preventing various types of attacks (like MITM, session hijacking, clickjacking, and XSS), and instructing browsers to implement stricter security policies.
