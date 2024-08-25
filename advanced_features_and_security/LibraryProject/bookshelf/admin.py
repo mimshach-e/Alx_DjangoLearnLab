@@ -12,12 +12,13 @@ class BookAdmin(admin.ModelAdmin):
     
 admin.site.register(Book, BookAdmin)
 
-class CustomerUserAdmin(UserAdmin):
+# Integrate the Custom User Model into Admin
+class CustomUserAdmin(UserAdmin):
     model = CustomUser
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('date_of_birth', 'profile_photo')})
         )
-admin.site.register(CustomUser, CustomerUserAdmin)    
+admin.site.register(CustomUser, CustomUserAdmin)    
 
 class CustomUserMangerAdmin(admin.ModelAdmin):
     model = CustomUserManager
