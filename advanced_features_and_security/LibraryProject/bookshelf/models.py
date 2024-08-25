@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
+from .models import CustomUserManager
+from django.conf import settings
 
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     publication_year = models.IntegerField()
 
     def __str__(self):
@@ -14,9 +16,23 @@ class Book(models.Model):
 # Creating a custom user using AbtractUser
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(blank= False, null=False, editable=True)
-    profile_photo = models.ImageField(blank=True, null=True, editable=True)
+    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True, editable=True)
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=100, unique=True)
+    is_admin = models.BooleanField(default=False)
 
-# Integrate the Custom User Model into Admin
+    # Linking the custom manager to the CustomUser model
+    objects = CustomUserManager() 
+
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'email'] 
+
+    def __str__(self):
+        return self.username
+
+
+# Create User Manager for Custom User Model
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, date_of_birth, password=None):
         if not username:
