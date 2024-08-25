@@ -52,6 +52,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
+LOGIN_REDIRECT_URL = "/accounts/profile"
+LOGOUT_REDIRECT_URL = "/logout"
+AUTH_USER_MODEL = "bookshelf.CustomUser"
 
 TEMPLATES = [
     {    
@@ -123,9 +126,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
-LOGIN_REDIRECT_URL = "/accounts/profile"
-LOGOUT_REDIRECT_URL = "/logout"
 
 
 # Default primary key field type
