@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.conf import settings
 
+
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -14,10 +15,10 @@ class Book(models.Model):
     
     class Meta:
         permissions = [
-            ('can_view', 'can view'),
-            ('can_create', 'can create'),
-            ('can_edit', 'can edit'),
-            ('can_delete', 'can delete'),
+            ('can_view', 'Can view book'),
+            ('can_create', 'Can create book'),
+            ('can_edit', 'Can edit book'),
+            ('can_delete', 'Can delete book'),
         ]
 
 
@@ -67,7 +68,7 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', date_of_birth] 
+    REQUIRED_FIELDS = ['email'] 
 
     def __str__(self):
         return self.username
