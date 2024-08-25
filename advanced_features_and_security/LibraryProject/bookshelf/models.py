@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import BaseUserManager
-from .models import CustomUserManager
+from django.contrib.auth.base_user import BaseUserManager
 from django.conf import settings
 
 # Create your models here.
@@ -13,23 +12,14 @@ class Book(models.Model):
     def __str__(self):
         return f" {self.title} by {self.author}, {self.publication_year}"
     
-# Creating a custom user using AbtractUser
-class CustomUser(AbstractUser):
-    date_of_birth = models.DateField(blank= False, null=False, editable=True)
-    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True, editable=True)
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=100, unique=True)
-    is_admin = models.BooleanField(default=False)
+    class Meta:
+        permissions = [
+            ('can_view', 'can view'),
+            ('can_create', 'can create'),
+            ('can_edit', 'can edit'),
+            ('can_delete', 'can delete'),
+        ]
 
-    # Linking the custom manager to the CustomUser model
-    objects = CustomUserManager() 
-
-    USERNAME_FIELD = 'username'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'email'] 
-
-    def __str__(self):
-        return self.username
 
 
 # Create User Manager for Custom User Model
@@ -62,5 +52,24 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
+
+# Creating a custom user using AbtractUser
+class CustomUser(AbstractUser):
+    date_of_birth = models.DateField(blank= False, null=False, editable=True)
+    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True, editable=True)
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=100, unique=True)
+    is_admin = models.BooleanField(default=False)
+
+    # Linking the custom manager to the CustomUser model
+    objects = CustomUserManager() 
+
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['email', date_of_birth] 
+
+    def __str__(self):
+        return self.username
 
 
