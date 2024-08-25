@@ -41,6 +41,13 @@ X_FRAME_OPTIONS = 'DENY'
 # This helps protect against attacks where a file is interpreted differently than its actual type.
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+# SECURE_PROXY_SSL_HEADER: This setting tells Django to trust the X-Forwarded-Proto header
+# that comes from our proxy. We use this when the proxy handles SSL termination, and the
+# Django app is actually receiving plain HTTP traffic but needs to know that the original
+# request was via HTTPS.
+# Proxy SSL Header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Ensures that the CSRF cookie is only sent over HTTPS, enhancing the security of the CSRF protection.
 # This setting should be enabled when your site is served over HTTPS.
 CSRF_COOKIE_SECURE = True
