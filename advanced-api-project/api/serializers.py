@@ -1,4 +1,4 @@
-# Importing necessary packages and libaries
+# Importing necessary modules and classes
 from rest_framework import serializers
 from .models import Book, Author
 from datetime import datetime
