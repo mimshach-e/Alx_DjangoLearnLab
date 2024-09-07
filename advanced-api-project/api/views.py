@@ -20,7 +20,7 @@ class ListView(ListAPIView):
 
     # allowing filtering by 'author', 'name' or 'publication_year'
     filter_backends = [DjangoFilterBackend]
-    filtersets_fields = ['name', 'author', 'publication_year']
+    filtersets_fields = ['title', 'author', 'publication_year']
 
     # Enabling Pagination to set number of books displayed per page.
     pagination_class = PageNumberPagination
