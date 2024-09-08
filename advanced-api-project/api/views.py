@@ -15,7 +15,7 @@ This view allows unauthenticated users to have read only access.
 class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     # allowing filtering by 'author', 'title' or 'publication_year'
     filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -39,7 +39,7 @@ This view allows unauthenticated users have read only access.
 class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 """
@@ -49,7 +49,7 @@ to create new authors.
 class CreateAuthorView(generics.CreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    #permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 """
@@ -59,7 +59,7 @@ Only authenticated users can create books.
 class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer   
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     # Custom method to handle form submission when creating books
     # def perform_create(self, serializer):
@@ -73,7 +73,7 @@ Only authenticated users can update books.
 class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer 
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     # # Custom method to handle form submission when updating books
     # def perform_update(self, serializer):
@@ -88,4 +88,4 @@ Only authenticated users can delete books.
 class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    #permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
