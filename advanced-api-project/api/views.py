@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework import generics
@@ -19,7 +18,7 @@ class ListView(generics.ListAPIView):
     #permission_classes = [IsAuthenticatedOrReadOnly]
 
     # allowing filtering by 'author', 'title' or 'publication_year'
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['title', 'author__name', 'publication_year']
     
     # enabling search functionality by 'title', or 'author' 
@@ -40,7 +39,7 @@ This view allows unauthenticated users have read only access.
 class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 """
@@ -50,7 +49,7 @@ to create new authors.
 class CreateAuthorView(generics.CreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    #permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 """
@@ -60,7 +59,7 @@ Only authenticated users can create books.
 class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer   
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     # Custom method to handle form submission when creating books
     # def perform_create(self, serializer):
@@ -74,7 +73,7 @@ Only authenticated users can update books.
 class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer 
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     # # Custom method to handle form submission when updating books
     # def perform_update(self, serializer):
@@ -89,4 +88,4 @@ Only authenticated users can delete books.
 class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    #permission_classes = [IsAuthenticated, IsAdminUser]
