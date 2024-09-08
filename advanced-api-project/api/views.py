@@ -4,7 +4,7 @@ from .serializers import BookSerializer, AuthorSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework import generics
 from rest_framework import filters
 
 
@@ -13,7 +13,7 @@ from rest_framework import filters
 Implementing a List API view for retrieving all books from the Book Model.
 This view allows unauthenticated users to have read only access.
 """
-class ListView(ListAPIView):
+class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
@@ -37,7 +37,7 @@ class ListView(ListAPIView):
 Implementing a Detail API view for retrieving a single book by ID from the Book Model.
 This view allows unauthenticated users have read only access.
 """
-class DetailView(RetrieveAPIView):
+class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -47,7 +47,7 @@ class DetailView(RetrieveAPIView):
 An Author creation view to enable only authenticated and admin users 
 to create new authors.
 """
-class CreateAuthorView(CreateAPIView):
+class CreateAuthorView(generics.CreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -57,7 +57,7 @@ class CreateAuthorView(CreateAPIView):
 Implementing a Create API view for adding new books into the Book Model.
 Only authenticated users can create books.
 """
-class CreateView(CreateAPIView):
+class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer   
     permission_classes = [IsAuthenticated]
@@ -71,7 +71,7 @@ class CreateView(CreateAPIView):
 An API view for modifying an existing book in the Book Model.
 Only authenticated users can update books.
 """
-class UpdateView(UpdateAPIView):
+class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer 
     permission_classes = [IsAuthenticated]
@@ -86,7 +86,7 @@ class UpdateView(UpdateAPIView):
 A Delete view for deleting books instances from the Book Model.
 Only authenticated users can delete books.
 """
-class DeleteView(DestroyAPIView):
+class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
