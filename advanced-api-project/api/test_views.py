@@ -11,10 +11,13 @@ class BookAPITest(APITestCase):
         # Create a test user
         self.user = User.objects.create_user(username='testuser', password='testpass')
 
-        # Create and assign token to the user
+        # Create and assign token to the user (for token-based authentication)
         self.token = Token.objects.create(user=self.user)
 
-        # Include the token in the request headers for authentication
+        # Use session-based login as well (for cases expecting self.client.login)
+        self.client.login(username='testuser', password='testpass')
+
+        # Include the token in the request headers for token-based authentication
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
         # Create an author and book
@@ -26,8 +29,8 @@ class BookAPITest(APITestCase):
         )
 
         # URLs
-        self.list_url = reverse('book-list')  # Replace 'book-list' with the actual URL name for listing books
-        self.detail_url = reverse('book-detail', args=[self.book.id])  # Replace with the correct URL name for detail view
+        self.list_url = reverse('book-list')  # Replace 'book-list' with actual URL name
+        self.detail_url = reverse('book-detail', args=[self.book.id])  # Replace with correct URL name
         self.create_url = reverse('book-create')  # Replace with your actual create view URL name
 
     def test_create_book(self):
