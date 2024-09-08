@@ -34,3 +34,16 @@ This API provides endpoints for managing books in our library system.
 - When creating or updating a book, the API automatically sets the `created_by` or `updated_by` field to the current user.
 - List view supports pagination to display 10 books per page and filtering is set to allow filtering by `name`, `author` or `publication_year`.
 - Detail view provides full information about a single book.
+
+## API Features
+
+- **Filtering**:
+  - `/api/books/?title=Rhapsody`
+  - `/api/books/?author__name=Pastor%20Chris`
+
+- **Search**:
+  - `/api/books/?search=Brian%20Tracy`
+
+- **Ordering**:
+  - `/api/books/?ordering=publication_year`
+  - `/api/books/?ordering=-title`

@@ -5,7 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-
+from rest_framework import filters
 
 
 # Create your views here.
@@ -16,11 +16,18 @@ This view allows unauthenticated users to have read only access.
 class ListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly]
 
-    # allowing filtering by 'author', 'name' or 'publication_year'
-    filter_backends = [DjangoFilterBackend]
-    filtersets_fields = ['title', 'author', 'publication_year']
+    # allowing filtering by 'author', 'title' or 'publication_year'
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['title', 'author__name', 'publication_year']
+    
+    # enabling search functionality by 'title', or 'author' 
+    search_fields = ['title', 'author__name']
+
+    # implementing ordering by 'title', or 'publication_year
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title'] # default ordering
 
     # Enabling Pagination to set number of books displayed per page.
     pagination_class = PageNumberPagination
@@ -56,9 +63,9 @@ class CreateView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     # Custom method to handle form submission when creating books
-    def perform_create(self, serializers):
-        # this sets the created_by field to the current user
-        serializers.save(created_by=self.request.user) 
+    # def perform_create(self, serializer):
+    #     # this sets the created_by field to the current user
+    #     serializer.save(created_by=self.request.user) 
 
 """
 An API view for modifying an existing book in the Book Model.
@@ -69,10 +76,10 @@ class UpdateView(UpdateAPIView):
     serializer_class = BookSerializer 
     permission_classes = [IsAuthenticated]
 
-    # Custom method to handle form submission when updating books
-    def perform_update(self, serializer):
-       # this sets the updated_by field to the current user
-       serializer.save(updated_by=self.request.user) 
+    # # Custom method to handle form submission when updating books
+    # def perform_update(self, serializer):
+    #    # this sets the updated_by field to the current user
+    #    serializer.save(updated_by=self.request.user) 
 
 
 """
