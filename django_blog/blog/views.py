@@ -36,7 +36,7 @@ def profileView(request):
             return redirect('profile')
     else:
         form = UserProfileForm(instance=request.user)
-    return render(request, 'registration/profile.html', {'form': form})
+    return render(request, 'blog/profile.html', {'form': form})
     
  
 
