@@ -66,7 +66,7 @@ TEMPLATES = [
             ],
         },
 
-        'DIRS': [BASE_DIR / 'blog/templates/registration'],
+        'DIRS': [BASE_DIR / 'blog/templates/blog'],
     },
 ]
 

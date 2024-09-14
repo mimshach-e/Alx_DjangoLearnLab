@@ -18,7 +18,7 @@ def registerView(request):
             return redirect(reverse('home'))
     else:
         form = CustomRegistrationForm()
-    return render(request, 'registration/register.html', {'form': form})        
+    return render(request, 'blog/register.html', {'form': form})        
 
 
 # Profile View and Management 
