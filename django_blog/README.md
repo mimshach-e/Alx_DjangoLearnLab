@@ -59,3 +59,29 @@ This Django blog project includes a comprehensive authentication system with the
 - CSRF protection is enabled for all forms
 - Passwords are securely hashed using Django's default password hasher
 - Always use HTTPS in production to encrypt data in transit
+
+
+
+## Blog Post Management
+
+This Django project includes full CRUD (Create, Read, Update, Delete) functionality for blog posts. Here's an overview of the features:
+
+- **Viewing Posts**: All users can view the list of blog posts and individual post details.
+- **Creating Posts**: Authenticated users can create new blog posts.
+- **Editing Posts**: Authors can edit their own posts.
+- **Deleting Posts**: Authors can delete their own posts.
+
+### Usage
+
+- To view all posts, navigate to the home page or `/posts/`.
+- To create a new post, click the "Create New Post" button (requires authentication).
+- To view a post's details, click on its title in the post list.
+- To edit or delete a post, use the respective buttons on the post detail page (only available to the post's author).
+
+### Permissions
+
+- Viewing posts is available to all users.
+- Creating posts requires user authentication.
+- Editing and deleting posts are restricted to the post's author.
+
+For more details on implementation, please refer to the `views.py`, `forms.py`, and `urls.py` files in the `blog` app.
