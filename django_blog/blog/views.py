@@ -65,11 +65,25 @@ class PostDetailView(DetailView):
         context['comment_form'] = CommentForm()
         return context
     
-def tagged_posts(request, tag_slug):
-    tag = get_object_or_404(Tag, slug=tag_slug)
-    posts = Post.objects.filter(tags__in=[tag])
-    return render(request, 'tag_posts.html', {'tag': tag, 'posts': posts})
+from django.views.generic import ListView
+from django.shortcuts import get_object_or_404
+from taggit.models import Tag
+from .models import Post
 
+class PostByTagListView(ListView):
+    template_name = 'tag_posts.html'
+    context_object_name = 'posts'
+    paginate_by = 10  # Optional: Add pagination
+
+    def get_queryset(self):
+        self.tag = get_object_or_404(Tag, slug=self.kwargs['tag_slug'])
+        return Post.objects.filter(tags__in=[self.tag])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.tag
+        return context
+    
 def search_posts(request):
     query = request.GET.get('q')
     if query:
