@@ -10,7 +10,7 @@ urlpatterns = [
     path('', homeView, name='home'), 
     path('posts/', PostListView.as_view(template_name='blog/post_list.html'), name='posts'),
     path('posts/<int:pk>/', PostDetailView.as_view(template_name='blog/post_detail.html'), name='post_detail'),
-    path('post/new/', PostCreateView.as_view(template_name='blog/create_post.html'), name='post_create'),
-    path('post/<int:pk>/update/', PostUpdateView.as_view(template_name='blog/update_post.html'), name='post_update'),
-    path('post/<int:pk>/delete/', PostDeleteView.as_view(template_name='blog/delete_post.html'), name='post_delete'),
+    path('post/new/', PostCreateView.as_view(template_name='blog/post_create.html'), name='post_create'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(template_name='blog/post_update.html'), name='post_update'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(template_name='blog/post_delete.html'), name='post_delete'),
 ]

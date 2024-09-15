@@ -62,7 +62,7 @@ class PostDetailView(DetailView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class =CreatePostForm
-    template_name = 'blog/create_post.html'
+    template_name = 'blog/post_create.html'
     success_url = reverse_lazy('posts')
     
     def form_valid(self, form):
@@ -75,7 +75,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = CreatePostForm
-    template_name = 'blog/update_post.html'
+    template_name = 'blog/post_update.html'
     success_url = reverse_lazy('posts')
 
     def form_valid(self, form):
@@ -91,7 +91,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 # Delete View: This view allows authenticated users or authors to delete posts
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/delete_post.html'
+    template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('posts')
 
     def test_func(self):
