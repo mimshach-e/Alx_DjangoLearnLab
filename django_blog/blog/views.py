@@ -7,6 +7,8 @@ from .models import Post, Comment
 from .forms import CustomRegistrationForm, UserProfileForm, PostCreateForm, CommentForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
+
 
 # Registration View
 def registerView(request):
@@ -62,6 +64,24 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         return context
+    
+def tagged_posts(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags__in=[tag])
+    return render(request, 'tag_posts.html', {'tag': tag, 'posts': posts})
+
+def search_posts(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) | 
+            Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.none()
+    return render(request, 'search_results.html', {'posts': posts, 'query': query})    
+    
     
 # Create View: This view allows authenticated users or authors to create posts
 class PostCreateView(LoginRequiredMixin, CreateView):
