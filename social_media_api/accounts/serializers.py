@@ -14,13 +14,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = get_user_model().objects.create_user(**validated_data)
-        token, created = Token.objects.get_or_create(user=user)
+        token = Token.objects.create(user=user)
         user.token = token.key
         return user
-
+    
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
     token = serializers.CharField(read_only=True)
 
     def validate(self, data):
