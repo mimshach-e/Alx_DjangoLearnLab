@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField()
     token = serializers.CharField(read_only=True)
 
     class Meta:
@@ -19,8 +19,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return user
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
+    username = serializers.CharField()
+    password = serializers.CharField()
     token = serializers.CharField(read_only=True)
 
     def validate(self, data):
@@ -31,10 +31,6 @@ class LoginSerializer(serializers.Serializer):
             return data
         raise serializers.ValidationError("Invalid Credentials")
 
-class TokenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Token
-        fields = ['key']
 
 
 
