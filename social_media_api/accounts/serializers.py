@@ -4,6 +4,7 @@ from .models import CustomUser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
 
 # A Registration serializer to serialize the CustomUser model for registration
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -18,7 +19,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             return make_password(value)
 
     def create(self, validated_data):
-            user = CustomUser.objects.get_or_create(**validated_data)
+            user = get_user_model().objects.create_user(**validated_data)
             return user
         
 
