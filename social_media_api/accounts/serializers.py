@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 
 # A Registration serializer to serialize the CustomUser model for registration
 class CustomUserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField()
 
     class Meta:
         model = CustomUser
@@ -26,7 +26,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 # A Login serializer 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
+    password = serializers.CharField()
 
     def validate(self, data):
         user = authenticate(**data)
