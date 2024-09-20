@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, SAFE_METHODS, IsAuthenticated
+from rest_framework import permissions
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
 from rest_framework import filters
@@ -11,10 +11,10 @@ from django_filters import rest_framework
 # Create Views for CRUD Operations
 
 # Custom permission to only allow authors of an object to edit or delete it.
-class IsAuthorOrReadOnly(BasePermission):
+class IsAuthorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request
-        if request.method in SAFE_METHODS:
+        if request.method in permissions.SAFE_METHODS:
             return True
         
         # Write permissions are only allowed to the author of the post/comment
@@ -26,7 +26,7 @@ class IsAuthorOrReadOnly(BasePermission):
 class PostView(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     
     filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['title']
@@ -43,13 +43,13 @@ class PostView(viewsets.ModelViewSet):
 class CommentView(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     pagination_class = PageNumberPagination
 
 # A Feed view to display posts of following users 
 class FeedView(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         # Get the list of all users the current user is following
