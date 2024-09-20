@@ -3,13 +3,13 @@ from .models import CustomUser
 from django.contrib.auth import login, authenticate
 from rest_framework import generics, views, status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import permissions
 from .serializers import CustomUserSerializer, LoginSerializer
 
 class RegisterAPIView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -19,7 +19,7 @@ class RegisterAPIView(generics.CreateAPIView):
 
 class LoginAPIView(views.APIView):
     serializer_class = LoginSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -43,8 +43,8 @@ class ProfileAPIView(views.APIView):
 
 
 # A view to follow a user only when logged-in
-class FollowUser(views.APIView):
-    permission_classes = [IsAuthenticated]
+class FollowUser(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def follow_user(self, request, pk):
         user_to_follow = get_object_or_404(CustomUser, pk=pk)
@@ -56,8 +56,8 @@ class FollowUser(views.APIView):
 
 
 # A view to unfollow a user only when logged-in
-class UnfollowUser(views.APIView):
-    permission_classes = [IsAuthenticated]
+class UnfollowUser(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def unfollow_user(self, request, user_id):
         user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
