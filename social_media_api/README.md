@@ -165,3 +165,45 @@ Authorization: Token your_token_here
 - **Condition**: If a request is made to a non-existent resource.
 - **Code**: 404 NOT FOUND
 - **Content**: `{ "detail": "Not found." }`
+
+
+## 2. Implementing User Follows and Feed Functionality
+## Step 1: Update the User Model to Handle Follows
+We've modified the CustomUser model in `accounts/models.py` to include a following field. This is a many-to-many relationship to itself, allowing users to follow other users.
+After making this change, you'll need to create and apply migrations:
+`python manage.py makemigrations accounts`
+`python manage.py migrate`
+
+## Step 2: Create API Endpoints for Managing Follows
+We've added two new views in `accounts/views.py`: `follow_user` and `unfollow_user`. These views handle the logic for following and unfollowing users. They include permission checks to ensure only authenticated users can perform these actions.
+
+## Step 3: Implement the Feed Functionality
+We've created a FeedView in `posts/views.py`. This view returns posts from users that the current user follows, ordered by creation date (most recent first).
+
+## Step 4: Define URL Patterns for New Features
+We've added new URL patterns in both `accounts/urls.py` and `posts/urls.py` to route requests to our new views.
+
+## Step 5: Test Follow and Feed Features
+To test these new features, you can use Postman or a similar tool. Here are some example API calls:
+
+# Follow a user:
+URL: /api/follow/<int:user_id>/
+Method: POST
+Authentication: Required
+Description: Allows the authenticated user to follow another user specified by user_id.
+(Assumes you're following a user with ID 2)
+
+# Unfollow a user:
+URL: /api/unfollow/<int:user_id>/
+Method: POST
+Authentication: Required
+Description: Allows the authenticated user to unfollow a previously followed user specified by user_id.
+
+# Get your feed:
+URL: /api/posts_feed/
+Method: GET
+Authentication: Required
+Description: Returns a list of posts from users that the authenticated user follows, ordered by creation date (newest first).
+
+NB: Proper authentication (e.g., JWT token) are included in the headers of these requests.
+

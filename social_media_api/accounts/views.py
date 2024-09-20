@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, get_object_or_404
 from .models import CustomUser
 from django.contrib.auth import login, authenticate
 from rest_framework import generics, views, status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import CustomUserSerializer, LoginSerializer
 
 class RegisterAPIView(generics.CreateAPIView):
@@ -40,4 +40,28 @@ class ProfileAPIView(views.APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# A view to follow a user only when logged-in
+class FollowUser(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def follow_user(self, request, pk):
+        user_to_follow = get_object_or_404(CustomUser, pk=pk)
+        if request.user == user_to_follow:
+            return Response({"error": "You can't follow yourself"}, status=400)
+        request.user.following.add(user_to_follow)
+
+
+
+
+# A view to unfollow a user only when logged-in
+class UnfollowUser(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def unfollow_user(self, request, user_id):
+        user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
+        if request.user == user_to_unfollow:
+            return Response({"error": "You can't unfollow yourself"}, status=400)
+        request.user.following.remove(user_to_unfollow)
 

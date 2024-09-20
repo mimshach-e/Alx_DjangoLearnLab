@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, SAFE_METHODS
+from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, SAFE_METHODS, IsAuthenticated
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework
+
 
 # Create Views for CRUD Operations
 
@@ -44,3 +45,15 @@ class CommentView(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     pagination_class = PageNumberPagination
+
+# A Feed view to display posts of following users 
+class FeedView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the list of all users the current user is following
+        following_users = self.request.user.following.all()
+
+        # Retrieve post from the users the current user is following, ordering by most recent date created
+        return Post.objects.filter(author__in=following_users).order_by("-created_at")
