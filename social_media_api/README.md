@@ -200,7 +200,7 @@ Authentication: Required
 Description: Allows the authenticated user to unfollow a previously followed user specified by user_id.
 
 # Get your feed:
-URL: /api/posts_feed/
+URL: /api/feed/
 Method: GET
 Authentication: Required
 Description: Returns a list of posts from users that the authenticated user follows, ordered by creation date (newest first).

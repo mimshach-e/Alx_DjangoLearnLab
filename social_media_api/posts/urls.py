@@ -5,7 +5,7 @@ from django.urls import path, include
 router = DefaultRouter()
 router.register(r'post', PostView)
 router.register(r'comment', CommentView)
-router.register(r'posts_feed', FeedView, basename='feed')
+router.register(r'feed', FeedView, basename='feed')
 
 urlpatterns = [
     path('', include(router.urls))
