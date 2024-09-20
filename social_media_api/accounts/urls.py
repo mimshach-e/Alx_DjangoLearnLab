@@ -8,6 +8,6 @@ urlpatterns = [
     path('profile/', ProfileAPIView.as_view(), name='profile'),
 
     #Follow URLs
-    path('follow/<int:pk>/', FollowUser.as_view(), name='follow-user'),
-    path('unfollow/<int:pk>/', UnfollowUser.as_view(), name='unfollow-user'),
+    path('follow/<int:user_id>', FollowUser.as_view(), name='follow-user'),
+    path('unfollow/<int:user_id>/', UnfollowUser.as_view(), name='unfollow-user'),
 ]

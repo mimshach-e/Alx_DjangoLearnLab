@@ -46,8 +46,8 @@ class ProfileAPIView(views.APIView):
 class FollowUser(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def follow_user(self, request, pk):
-        user_to_follow = get_object_or_404(CustomUser, pk=pk)
+    def follow_user(self, request, user_id):
+        user_to_follow = get_object_or_404(CustomUser, id=user_id)
         if request.user == user_to_follow:
             return Response({"error": "You can't follow yourself"}, status=400)
         request.user.following.add(user_to_follow)
