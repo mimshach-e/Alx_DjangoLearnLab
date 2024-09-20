@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework import permissions
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
@@ -47,7 +47,7 @@ class CommentView(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
 
 # A Feed view to display posts of following users 
-class FeedView(viewsets.ReadOnlyModelViewSet):
+class FeedView(generics.ListAPIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
