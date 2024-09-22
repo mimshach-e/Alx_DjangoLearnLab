@@ -281,6 +281,28 @@ Maintaining an is_read status for each notification
    - Description: Retrieves the authenticated user's notifications
    - Response: Includes an unread_count and a list of notifications
 
+4. **Mark All Notifications as Read**
+   - Endpoint: `/api/notifications/mark_all_read/`
+   - Method: POST
+   - Authentication: Required
+   - Description: Marks all of the user's unread notifications as read
+
+5. **Mark Single Notification as Read**
+   - Endpoint: `/api/notifications/<notification_id>/mark_as_read/`
+   - Method: POST
+   - Authentication: Required
+   - Description: Marks a specific notification as read
+
+# Usage
+
+1. To get notifications with unread count:
+   - Send a GET request to `/api/notifications/`
+   - The response will include unread_count and results (list of notifications)
+2. To mark all notifications as read:
+   - Send a POST request to `/api/notifications/mark_all_read/`
+3. To mark a specific notification as read:
+   - Send a POST request to `/api/notifications/<notification_id>/mark_as_read/`
+
 ## Notification Triggers
 
 Notifications are created for the following actions:
@@ -309,4 +331,7 @@ Comment listings use pagination to manage large sets of data efficiently. This h
 1. Always authenticate before attempting to like a post or create a comment.
 2. Handle potential errors, such as trying to like a post that doesn't exist.
 3. When fetching notifications, be prepared to handle pagination if implemented.
+4. Regularly fetch the notifications to get the updated unread count.
+5. After a user views their notifications, consider marking them as read to keep the unread count accurate.
+6. Provide users with options to mark individual notifications as read or to mark all as read at once.
 
