@@ -15,13 +15,6 @@ SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# Security settings
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP connections to HTTPS
-SESSION_COOKIE_SECURE = True  # Use secure cookies for sessions
-CSRF_COOKIE_SECURE = True  # Use secure cookies for CSRF
 
 # Database configuration (we'll use Heroku's PostgreSQL)
 import dj_database_url
