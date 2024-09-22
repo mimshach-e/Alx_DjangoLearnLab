@@ -207,3 +207,106 @@ Description: Returns a list of posts from users that the authenticated user foll
 
 NB: Proper authentication (e.g., JWT token) are included in the headers of these requests.
 
+
+
+# Social Media API Documentation: Likes and Notifications Functionality
+
+## Overview
+
+This document outlines the likes and notifications system implemented in our Social Media API. These features enhance user engagement by allowing users to like posts, comment on content, and receive notifications for various interactions. The notifications system has been enhanced to prominently showcase unread notifications and provide functionality to mark notifications as read.
+
+## Models
+
+### Like Model
+
+The Like model represents a user's like on a post. Key features:
+- Links a user to a post they've liked
+- Ensures a user can only like a post once
+- Stores the timestamp of when the like was created
+
+### Notification Model
+
+The Notification model stores various types of notifications. Key features:
+- Identifies the recipient of the notification
+- Identifies the actor (user who triggered the notification)
+- Describes the action with a verb (e.g., "liked", "commented")
+- Uses a generic relation to link to any model (e.g., a post or comment)
+- Includes a timestamp and a read status
+
+## Core Functionalities
+
+### Liking a Post
+
+Users can like posts through the API. The system:
+- Creates a new Like instance
+- Ensures a user can't like the same post multiple times
+- Generates a notification for the post author
+
+### Commenting on a Post
+
+Users can comment on posts. The system:
+- Creates a new Comment instance
+- Generates a notification for the post author (if the commenter is not the author)
+
+### Viewing Notifications
+
+Users can retrieve their notifications through the API. The system:
+- Returns a list of notifications for the authenticated user
+- Orders notifications by timestamp (newest first)
+
+## Unread Notifications
+The API now highlights unread notifications by:
+
+Providing an unread count in the response
+Maintaining an is_read status for each notification
+
+## API Endpoints
+
+1. **Like a Post**
+   - Endpoint: `/api/posts/<post_id>/like/`
+   - Method: POST
+   - Authentication: Required
+   - Description: Allows a user to like a specific post
+
+2. **Create a Comment**
+   - Endpoint: `/api/comments/`
+   - Method: POST
+   - Authentication: Required
+   - Description: Allows a user to comment on a post
+
+3. **Fetch Notifications**
+   - Endpoint: `/api/notifications/`
+   - Method: GET
+   - Authentication: Required
+   - Description: Retrieves the authenticated user's notifications
+   - Response: Includes an unread_count and a list of notifications
+
+## Notification Triggers
+
+Notifications are created for the following actions:
+1. When a user likes another user's post
+2. When a user comments on another user's post
+3. When a user follows another user
+
+Each notification includes:
+- Recipient (usually the post author)
+- Actor (user who performed the action)
+- Verb (description of the action)
+- Target (the post that was liked or commented on)
+
+## Permissions
+
+The API implements the following permission classes:
+- `IsAuthenticatedOrReadOnly`: Allows authenticated users to perform write operations, while allowing anyone to perform read operations.
+- `IsAuthorOrReadOnly`: A custom permission that only allows the author of an object (e.g., a comment) to modify or delete it.
+
+## Pagination
+
+Comment listings use pagination to manage large sets of data efficiently. This helps in reducing load times and improving overall performance.
+
+## Best Practices
+
+1. Always authenticate before attempting to like a post or create a comment.
+2. Handle potential errors, such as trying to like a post that doesn't exist.
+3. When fetching notifications, be prepared to handle pagination if implemented.
+
