@@ -79,32 +79,27 @@ class FeedView(generics.ListAPIView):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def like_post(request, pk):
-    try:
-        post = Post.objects.get(pk=pk)
-        like, created = Like.objects.get_or_create(user=request.user, post=post)
-        if created:
-            Notification.objects.create(
-                recipient = post.author,
-                actor = request.user,
-                verb = f'liked your post {post.title}',
-                target = post
-            )
-            return Response({'message': 'Post liked successfully'}, status=status.HTTP_201_CREATED)
-        return Response({'message': 'You have already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
-    except Post.DoesNotExist:
-        return Response({'message': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)   
-    
+    post = generics.get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if created:
+        Notification.objects.create(
+            recipient = post.author,
+            actor = request.user,
+            verb = f'liked your post {post.title}',
+            target = post
+        )
+        return Response({'message': 'Post liked successfully'}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'You have already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # A view to unlike a post if it exist or not already liked
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def unlike_post(request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)
     try:
-        post = Post.objects.get(pk=pk)
-        like = Like.objects.get(user= request.user, post=post)
+        like = Like.objects.get(user=request.user, post=post)
         like.delete()
         return Response({'message': 'Post unliked successfully'}, status=status.HTTP_200_OK)
-    
-    except (Post.DoesNotExist, Like.DoesNotExist):
-        return Response({'message': "You haven't liked this post"}, status=status.HTTP_404_NOT_FOUND)
+    except Like.DoesNotExist:
+        return Response({'message': "You haven't liked this post"}, status=status.HTTP_400_BAD_REQUEST)
