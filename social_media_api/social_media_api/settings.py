@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-a*tqa9=)+@$5alo@^dg3cs+q=lijgss6+%7@0(r8lucl&azef#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['heroku-social-media-app.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Security settings
@@ -66,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'social_media_api.urls'
