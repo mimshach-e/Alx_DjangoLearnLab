@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a*tqa9=)+@$5alo@^dg3cs+q=lijgss6+%7@0(r8lucl&azef#'
+SECRET_KEY = "e0e7vksx_n=-nb@=g@5z9%l!ac9tzxxq=of&(!w(pc86!=^^ym"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['heroku-social-media-app.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['heroku-social-media-app-12ed4c793fe1.herokuapp.com']
 
 
 # Security settings
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'social_media_api.urls'
@@ -93,20 +93,21 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#      'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'django_blog_db',
-#         'USER': 'root',
-#         'PASSWORD': 'RichMims@1607',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
-DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-}
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(default=os.environ['DATABASE_URL'])
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'social_media_db',
+            'USER': 'mimshach',
+            'PASSWORD': '858507',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 
 # Password validation
